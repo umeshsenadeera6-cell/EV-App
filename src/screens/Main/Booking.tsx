@@ -1,6 +1,7 @@
 import React from 'react';
-import { ChargingStation, useStationStore } from '../../store/useStationStore';
-import { ChevronLeft, Calendar, Clock, Zap, CheckCircle2, CreditCard } from 'lucide-react';
+import type { ChargingStation } from '../../store/useStationStore';
+import { useStationStore } from '../../store/useStationStore';
+import { ChevronLeft, Calendar, Zap, CheckCircle2, CreditCard } from 'lucide-react';
 import { bookingService } from '../../services/booking';
 import { useAuthStore } from '../../store/useAuthStore';
 

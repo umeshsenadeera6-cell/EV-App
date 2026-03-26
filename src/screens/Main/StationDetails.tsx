@@ -1,7 +1,7 @@
 import React from 'react';
-import { ChargingStation } from '../../store/useStationStore';
-import { X, MapPin, Zap, Clock, Star, Info, ShieldCheck, ChevronLeft, Map as MapIcon, Share2 } from 'lucide-react';
-import Booking from './Booking';
+import type { ChargingStation } from '../../store/useStationStore';
+import { X, MapPin, Zap, Clock, Star, Info, ShieldCheck, Map as MapIcon, Share2 } from 'lucide-react';
+import Booking from './Booking.tsx';
 
 interface Props {
   station: ChargingStation;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Mail, Lock, Zap, ArrowRight, Github, Chrome } from 'lucide-react';
+import { Mail, Lock, Zap, ArrowRight, Globe, Shield } from 'lucide-react';
 import { useAuthStore } from '../../store/useAuthStore';
 
 const Login: React.FC = () => {
@@ -145,11 +145,11 @@ const Login: React.FC = () => {
 
             <div className="grid grid-cols-2 gap-4 mb-12">
                <button className="flex items-center justify-center gap-3 py-4 bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 rounded-2xl transition-all font-bold group">
-                  <Chrome size={20} className="text-gray-400 group-hover:text-amber-500 transition-colors" />
+                  <Globe size={20} className="text-gray-400 group-hover:text-amber-500 transition-colors" />
                   Google
                </button>
                <button className="flex items-center justify-center gap-3 py-4 bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 rounded-2xl transition-all font-bold group">
-                  <Github size={20} className="text-gray-400 group-hover:text-dark transition-colors" />
+                  <Shield size={20} className="text-gray-400 group-hover:text-dark transition-colors" />
                   Github
                </button>
             </div>

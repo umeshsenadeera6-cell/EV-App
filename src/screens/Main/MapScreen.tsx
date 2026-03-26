@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MOCK_STATIONS, useStationStore } from '../../store/useStationStore';
-import { Search, Filter, MapPin, Zap, Clock, Star, ChevronRight } from 'lucide-react';
-import StationDetails from './StationDetails';
+import { Search, Filter, MapPin, Zap, Clock, Star } from 'lucide-react';
+import StationDetails from './StationDetails.tsx';
 
 const MapScreen: React.FC = () => {
   const { selectedStation, setSelectedStation } = useStationStore();

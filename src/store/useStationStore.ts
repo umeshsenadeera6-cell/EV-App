@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Reservation, QueueEntry } from "../services/booking";
+import type { Reservation, QueueEntry } from "../services/booking";
 
 export interface ChargingStation {
   id: string;

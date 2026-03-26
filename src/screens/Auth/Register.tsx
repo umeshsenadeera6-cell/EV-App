@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Mail, Lock, User, Zap, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Mail, Lock, User, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useAuthStore } from '../../store/useAuthStore';
 
 const Register: React.FC = () => {
