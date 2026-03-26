@@ -1,0 +1,90 @@
+.station-details-overlay {
+  position: absolute;
+  bottom: var(--spacing-xl);
+  left: var(--spacing-xl);
+  right: var(--spacing-xl);
+  background-color: var(--color-white);
+  border-radius: var(--radius-3xl);
+  box-shadow: var(--shadow-xl);
+  z-index: 50;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.details-header {
+  padding: var(--spacing-xl);
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  right: var(--spacing-xl);
+  top: var(--spacing-xl);
+  background-color: var(--color-gray-50);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-full);
+}
+
+.details-body {
+  padding: 0 var(--spacing-xl) var(--spacing-xl);
+  overflow-y: auto;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
+}
+
+.info-box {
+  background-color: var(--color-gray-50);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-xl);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.box-label {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--color-gray-400);
+  text-transform: uppercase;
+}
+
+.box-value {
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.amenities {
+  margin-top: var(--spacing-xl);
+}
+
+.amenity-chip {
+  background-color: var(--color-gray-50);
+  border: 1px solid var(--color-gray-100);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.booking-actions {
+  padding: var(--spacing-xl);
+  border-top: 1px solid var(--color-gray-50);
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.btn-primary-large {
+  flex: 1;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-xl);
+  font-weight: 800;
+  font-size: 18px;
+}

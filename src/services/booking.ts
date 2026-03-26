@@ -23,12 +23,20 @@ export interface QueueEntry {
 
 export const bookingService = {
   // Create a new reservation
-  async createReservation(reservation: Omit<Reservation, 'id'>) {
+  async createReservation(userId: string, stationId: string, duration: number): Promise<Reservation> {
+    const reservation: Omit<Reservation, 'id'> = {
+      userId,
+      stationId,
+      startTime: new Date(),
+      endTime: new Date(Date.now() + duration * 60000),
+      status: 'confirmed',
+      portIndex: 0,
+    };
     const docRef = await addDoc(collection(db, "reservations"), {
       ...reservation,
       createdAt: serverTimestamp(),
     });
-    return docRef.id;
+    return { id: docRef.id, ...reservation };
   },
 
   // Get user reservations
@@ -43,23 +51,35 @@ export const bookingService = {
   },
 
   // Join the queue
-  async joinQueue(stationId: string, userId: string, waitTime: number) {
+  async joinQueue(userId: string, stationId: string): Promise<QueueEntry> {
     const q = query(
       collection(db, "queues"),
       where("stationId", "==", stationId),
       where("userId", "==", userId)
     );
     const existing = await getDocs(q);
-    if (!existing.empty) return existing.docs[0].id;
+    
+    if (!existing.empty) {
+      return { id: existing.docs[0].id, ...existing.docs[0].data() } as QueueEntry;
+    }
 
-    const docRef = await addDoc(collection(db, "queues"), {
+    const waitTime = 15; // Default wait time
+    const position = await this.getQueueCount(stationId) + 1;
+    
+    const entryData = {
       stationId,
       userId,
-      joinedAt: serverTimestamp(),
+      joinedAt: new Date(),
       estimatedWaitTime: waitTime,
-      position: await this.getQueueCount(stationId) + 1,
+      position,
+    };
+
+    const docRef = await addDoc(collection(db, "queues"), {
+      ...entryData,
+      joinedAt: serverTimestamp(),
     });
-    return docRef.id;
+
+    return { id: docRef.id, ...entryData } as QueueEntry;
   },
 
   // Get queue count for a station

@@ -32,7 +32,7 @@ interface StationState {
   stations: ChargingStation[];
   selectedStation: ChargingStation | null;
   activeReservation: Reservation | null;
-  activeQueueEntry: QueueEntry | null;
+  queueEntry: QueueEntry | null;
   filters: {
     cleanEnergyOnly: boolean;
     minSpeed: number;
@@ -41,7 +41,7 @@ interface StationState {
   setStations: (stations: ChargingStation[]) => void;
   setSelectedStation: (station: ChargingStation | null) => void;
   setActiveReservation: (reservation: Reservation | null) => void;
-  setActiveQueueEntry: (queueEntry: QueueEntry | null) => void;
+  setQueueEntry: (queueEntry: QueueEntry | null) => void;
   setFilters: (filters: Partial<StationState["filters"]>) => void;
 }
 
@@ -49,7 +49,7 @@ export const useStationStore = create<StationState>((set) => ({
   stations: [],
   selectedStation: null,
   activeReservation: null,
-  activeQueueEntry: null,
+  queueEntry: null,
   filters: {
     cleanEnergyOnly: false,
     minSpeed: 0,
@@ -58,10 +58,14 @@ export const useStationStore = create<StationState>((set) => ({
   setStations: (stations) => set({ stations }),
   setSelectedStation: (selectedStation) => set({ selectedStation }),
   setActiveReservation: (activeReservation) => set({ activeReservation }),
-  setActiveQueueEntry: (activeQueueEntry) => set({ activeQueueEntry }),
+  setQueueEntry: (queueEntry) => set({ queueEntry }),
   setFilters: (newFilters) =>
     set((state) => ({ filters: { ...state.filters, ...newFilters } })),
 }));
+
+export const getAvailablePorts = (station: ChargingStation) => {
+  return station.ports.filter(p => p.status === 'available').length;
+};
 
 // Mock Data
 export const MOCK_STATIONS: ChargingStation[] = [

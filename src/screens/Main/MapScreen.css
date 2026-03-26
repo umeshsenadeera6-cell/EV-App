@@ -1,0 +1,154 @@
+.map-container {
+  display: flex;
+  height: calc(100vh - 2 * var(--spacing-2xl));
+  background-color: var(--color-white);
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+}
+
+.map-sidebar {
+  width: 400px;
+  border-right: 1px solid var(--color-gray-100);
+  display: flex;
+  flex-direction: column;
+}
+
+.map-sidebar-header {
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.search-bar {
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) var(--spacing-3xl);
+  background-color: var(--color-gray-50);
+  border: 2px solid transparent;
+  border-radius: var(--radius-xl);
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.search-input:focus {
+  border-color: var(--color-primary-light);
+  background-color: var(--color-white);
+  box-shadow: 0 0 0 4px var(--color-primary-light);
+  outline: none;
+}
+
+.search-icon {
+  position: absolute;
+  left: var(--spacing-md);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-gray-400);
+}
+
+.station-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.station-card {
+  display: flex;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-xl);
+  background-color: var(--color-gray-50);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.station-card:hover {
+  background-color: var(--color-white);
+  border-color: var(--color-gray-100);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.station-card.selected {
+  background-color: var(--color-primary-light);
+  border-color: var(--color-primary);
+}
+
+.station-thumb {
+  width: 64px;
+  height: 64px;
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: var(--spacing-md);
+}
+
+.energy-badge {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.energy-badge.high { background-color: var(--color-primary-light); color: var(--color-primary-dark); }
+.energy-badge.low { background-color: var(--color-amber-light); color: var(--color-amber); }
+
+.map-view {
+  flex: 1;
+  background-color: var(--color-gray-100);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  color: var(--color-gray-400);
+  font-weight: 700;
+}
+
+.map-markers {
+  position: absolute;
+  inset: 0;
+}
+
+.marker {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  background-color: var(--color-white);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.marker:hover { transform: scale(1.1); }
+.marker.selected { border: 3px solid var(--color-primary); }
+
+@media (max-width: 1024px) {
+  .map-sidebar {
+    width: 100%;
+  }
+  .map-view {
+    display: none;
+  }
+}
