@@ -15,6 +15,7 @@ import ImpactDashboardScreen from "../screens/Main/ImpactDashboard";
 import ProfileScreen from "../screens/Main/ProfileScreen";
 
 import { useAuthStore } from "../store/useAuthStore";
+import BookingScreen from "../screens/Main/BookingScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -74,8 +75,9 @@ export default function AppNavigator() {
         </>
       ) : (
         <>
-          <Stack.Screen name="Main" component={MainTabNavigator} />
+          <Stack.Screen name="MainTabs" component={MainTabNavigator} />
           <Stack.Screen name="StationDetails" component={StationDetailsScreen} />
+          <Stack.Screen name="Booking" component={BookingScreen} />
         </>
       )}
     </Stack.Navigator>

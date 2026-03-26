@@ -1,14 +1,46 @@
 import React from "react";
-import { View, Text, ScrollView, TouchableOpacity, Image, SafeAreaView } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image, SafeAreaView, Alert } from "react-native";
 import { useStationStore } from "../../store/useStationStore";
 import { ChevronLeft, Zap, MapPin, Clock, Star, Info, ShieldCheck } from "lucide-react-native";
 import { useNavigation } from "@react-navigation/native";
+import { bookingService } from "../../services/booking";
+import { useAuthStore } from "../../store/useAuthStore";
 
 export default function StationDetailsScreen() {
-  const { selectedStation } = useStationStore();
-  const navigation = useNavigation();
+  const { selectedStation, setActiveQueueEntry, activeQueueEntry } = useStationStore();
+  const navigation = useNavigation<any>();
+  const user = useAuthStore(state => state.user);
 
   if (!selectedStation) return null;
+
+  const handleJoinQueue = async () => {
+    if (!user) {
+      Alert.alert("Login Required", "Please login to join the virtual queue.");
+      return;
+    }
+
+    try {
+      const queueId = await bookingService.joinQueue(
+        selectedStation.id,
+        user.uid,
+        selectedStation.waitTime
+      );
+      const position = await bookingService.getQueueCount(selectedStation.id);
+      
+      setActiveQueueEntry({
+        id: queueId,
+        stationId: selectedStation.id,
+        userId: user.uid,
+        joinedAt: new Date(),
+        estimatedWaitTime: selectedStation.waitTime,
+        position,
+      });
+
+      Alert.alert("Quick Queue joined!", `You are at position #${position}. We'll notify you when a port is ready.`);
+    } catch (error) {
+      console.error("Queue failed:", error);
+    }
+  };
 
   return (
     <View className="flex-1 bg-white">
@@ -81,7 +113,7 @@ export default function StationDetailsScreen() {
               >
                 <View className="flex-row justify-between items-center mb-2">
                   <Text className="font-bold text-dark">{port.power}</Text>
-                  <View className={`w-3 h-3 rounded-full ${port.status === "available" ? "bg-emerald-500" : "bg-gray-300"}`} />
+                  <View className={`w-3 h-3 rounded-full ${port.status === "available" ? "bg-emerald-500" : "bg-gray-400"}`} />
                 </View>
                 <Text className="text-gray-500 text-sm mb-1">{port.id}</Text>
                 <Text className={`font-semibold ${port.status === "available" ? "text-primary" : "text-gray-400"}`}>
@@ -105,16 +137,36 @@ export default function StationDetailsScreen() {
       </ScrollView>
 
       {/* Sticky Bottom Bar */}
-      <SafeAreaView className="bg-white border-t border-gray-100 px-6 py-4 flex-row items-center">
+      <SafeAreaView className="bg-white border-t border-gray-100 px-6 py-4">
+        <View className="flex-row items-center mb-4">
+          <TouchableOpacity 
+            onPress={() => navigation.navigate("Booking", { station: selectedStation })}
+            className="flex-1 bg-white border border-gray-200 py-4 rounded-2xl items-center mr-3"
+          >
+            <Text className="text-dark font-bold">Book Spot</Text>
+          </TouchableOpacity>
+          
+          {selectedStation.waitTime > 0 || activeQueueEntry ? (
+            <TouchableOpacity 
+              onPress={handleJoinQueue}
+              disabled={!!activeQueueEntry}
+              className={`flex-1 py-4 rounded-2xl items-center ${
+                activeQueueEntry ? "bg-emerald-50" : "bg-amber-50"
+              }`}
+            >
+              <Text className={`font-bold ${activeQueueEntry ? "text-primary" : "text-amber-700"}`}>
+                {activeQueueEntry ? `In Queue (#${activeQueueEntry.position})` : "Join Quick Queue"}
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <View className="flex-1" />
+          )}
+        </View>
+
         <TouchableOpacity 
-          className="flex-1 bg-gray-100 py-4 rounded-2xl items-center mr-4"
+          className="w-full bg-primary py-5 rounded-2xl items-center shadow-lg shadow-emerald-200"
         >
-          <Text className="text-dark font-bold">Navigate</Text>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          className="flex-1 bg-primary py-4 rounded-2xl items-center shadow-lg shadow-emerald-200"
-        >
-          <Text className="text-white font-bold">Start Session</Text>
+          <Text className="text-white text-lg font-bold">Start Charging Session</Text>
         </TouchableOpacity>
       </SafeAreaView>
     </View>

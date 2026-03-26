@@ -91,7 +91,7 @@ export default function RegisterScreen() {
             <TouchableOpacity onPress={() => navigation.navigate("Login")}>
               <Text className="text-primary text-base font-bold">Login</Text>
             </TouchableOpacity>
-          </div>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

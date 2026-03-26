@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { Reservation, QueueEntry } from "../services/booking";
 
 export interface ChargingStation {
   id: string;
@@ -30,6 +31,8 @@ export interface ChargingStation {
 interface StationState {
   stations: ChargingStation[];
   selectedStation: ChargingStation | null;
+  activeReservation: Reservation | null;
+  activeQueueEntry: QueueEntry | null;
   filters: {
     cleanEnergyOnly: boolean;
     minSpeed: number;
@@ -37,12 +40,16 @@ interface StationState {
   };
   setStations: (stations: ChargingStation[]) => void;
   setSelectedStation: (station: ChargingStation | null) => void;
+  setActiveReservation: (reservation: Reservation | null) => void;
+  setActiveQueueEntry: (queueEntry: QueueEntry | null) => void;
   setFilters: (filters: Partial<StationState["filters"]>) => void;
 }
 
 export const useStationStore = create<StationState>((set) => ({
   stations: [],
   selectedStation: null,
+  activeReservation: null,
+  activeQueueEntry: null,
   filters: {
     cleanEnergyOnly: false,
     minSpeed: 0,
@@ -50,18 +57,20 @@ export const useStationStore = create<StationState>((set) => ({
   },
   setStations: (stations) => set({ stations }),
   setSelectedStation: (selectedStation) => set({ selectedStation }),
+  setActiveReservation: (activeReservation) => set({ activeReservation }),
+  setActiveQueueEntry: (activeQueueEntry) => set({ activeQueueEntry }),
   setFilters: (newFilters) =>
     set((state) => ({ filters: { ...state.filters, ...newFilters } })),
 }));
 
-// Mock Data
+// Mock Data (Melbourne Area)
 export const MOCK_STATIONS: ChargingStation[] = [
   {
     id: "1",
-    name: "EcoCharge Hub - Downtown",
-    address: "123 Solar Way, Metro City",
-    latitude: 37.78825,
-    longitude: -122.4324,
+    name: "EcoCharge Hub - Melbourne CBD",
+    address: "123 Solar Way, Melbourne VIC",
+    latitude: -37.8136,
+    longitude: 144.9631,
     cleanEnergyPercentage: 98,
     energySources: ["Solar", "Wind"],
     operator: "EcoCharge Network",
@@ -78,10 +87,10 @@ export const MOCK_STATIONS: ChargingStation[] = [
   },
   {
     id: "2",
-    name: "GreenGrid Station",
-    address: "456 Windy Blvd, Metro City",
-    latitude: 37.79825,
-    longitude: -122.4424,
+    name: "GreenGrid Southbank",
+    address: "456 Windy Blvd, Southbank VIC",
+    latitude: -37.8226,
+    longitude: 144.9621,
     cleanEnergyPercentage: 85,
     energySources: ["Wind", "Hydro"],
     operator: "GreenGrid Inc",
@@ -98,10 +107,10 @@ export const MOCK_STATIONS: ChargingStation[] = [
   },
   {
     id: "3",
-    name: "City Charging Point",
-    address: "789 Main St, Metro City",
-    latitude: 37.77825,
-    longitude: -122.4224,
+    name: "Docklands Charging Point",
+    address: "789 Main St, Docklands VIC",
+    latitude: -37.8150,
+    longitude: 144.9460,
     cleanEnergyPercentage: 45,
     energySources: ["Grid Mix"],
     operator: "City Charge",
