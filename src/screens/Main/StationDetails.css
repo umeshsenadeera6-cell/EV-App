@@ -1,90 +1,127 @@
-.station-details-overlay {
-  position: absolute;
-  bottom: var(--spacing-xl);
-  left: var(--spacing-xl);
-  right: var(--spacing-xl);
-  background-color: var(--color-white);
-  border-radius: var(--radius-3xl);
-  box-shadow: var(--shadow-xl);
-  z-index: 50;
-  max-height: 80vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.details-header {
+.station-details-container {
+  height: 100%;
   padding: var(--spacing-xl);
-  position: relative;
-}
-
-.close-btn {
-  position: absolute;
-  right: var(--spacing-xl);
-  top: var(--spacing-xl);
-  background-color: var(--color-gray-50);
-  padding: var(--spacing-sm);
-  border-radius: var(--radius-full);
-}
-
-.details-body {
-  padding: 0 var(--spacing-xl) var(--spacing-xl);
+  background-color: white;
   overflow-y: auto;
 }
 
-.info-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-lg);
-  margin-top: var(--spacing-xl);
+.details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
 }
 
-.info-box {
-  background-color: var(--color-gray-50);
-  padding: var(--spacing-md);
+.station-main-info {
+  background-color: var(--color-bg-light);
   border-radius: var(--radius-xl);
+  padding: var(--spacing-xl);
+  display: flex;
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-2xl);
+  position: relative;
+}
+
+.station-img {
+  width: 100px;
+  height: 100px;
+  border-radius: var(--radius-lg);
+  object-fit: cover;
+}
+
+.station-status-badge {
+  position: absolute;
+  top: var(--spacing-xl);
+  right: var(--spacing-xl);
+  background-color: #f0fdf4;
+  color: #10b981;
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.renewable-text {
+  color: var(--color-primary);
+  font-weight: 800;
+  font-size: 14px;
   display: flex;
   align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.connector-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--spacing-md);
+  margin-bottom: var(--spacing-2xl);
 }
 
-.box-label {
-  font-size: 10px;
-  font-weight: 800;
-  color: var(--color-gray-400);
-  text-transform: uppercase;
+.connector-card {
+  border: 2px solid var(--color-bg-light);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.box-value {
-  font-weight: 800;
-  font-size: 16px;
+.connector-card.active {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-soft);
 }
 
-.amenities {
-  margin-top: var(--spacing-xl);
+.connector-card.occupied {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-.amenity-chip {
-  background-color: var(--color-gray-50);
-  border: 1px solid var(--color-gray-100);
-  padding: 4px 12px;
-  border-radius: var(--radius-full);
+.occupied-text {
+  color: #ef4444;
   font-size: 12px;
   font-weight: 700;
 }
 
-.booking-actions {
-  padding: var(--spacing-xl);
-  border-top: 1px solid var(--color-gray-50);
-  display: flex;
-  gap: var(--spacing-md);
+.charging-mode-section {
+  margin-bottom: var(--spacing-2xl);
 }
 
-.btn-primary-large {
-  flex: 1;
-  background-color: var(--color-primary);
-  color: var(--color-white);
-  padding: var(--spacing-lg);
+.eco-mode-banner {
+  border: 2px solid var(--color-primary);
+  background-color: var(--color-primary-soft);
   border-radius: var(--radius-xl);
-  font-weight: 800;
+  padding: var(--spacing-xl);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.eco-mode-tag {
+  background-color: #dcfce7;
+  color: #15803d;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.btn-start-journey {
+  width: 100%;
+  background: var(--grad-eco);
+  color: white;
+  padding: 20px;
+  border-radius: var(--radius-full);
   font-size: 18px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
 }

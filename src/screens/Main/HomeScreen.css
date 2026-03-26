@@ -1,0 +1,142 @@
+.home-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-2xl);
+}
+
+.header-text h1 {
+  font-size: 32px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.eco-mode-badge {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.search-mini {
+  background-color: var(--color-primary);
+  color: white;
+  padding: 12px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vehicle-card {
+  background: linear-gradient(135deg, #3b82f6 0%, #0ea5e9 100%);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-xl);
+  color: white;
+  margin-bottom: var(--spacing-xl);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 40px -10px rgba(59, 130, 246, 0.3);
+}
+
+.vehicle-name {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.charge-status {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: var(--spacing-2xl);
+}
+
+.battery-display {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-sm);
+}
+
+.battery-percent {
+  font-size: 48px;
+  font-weight: 900;
+}
+
+.range-text {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.optimal-badge {
+  position: absolute;
+  right: var(--spacing-xl);
+  bottom: var(--spacing-xl);
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+}
+
+.quick-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.action-card {
+  background-color: white;
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(0,0,0,0.02);
+}
+
+.action-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-title {
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.action-subtitle {
+  color: var(--color-dark-muted);
+  font-size: 14px;
+}
+
+.mini-map-preview {
+  background-color: white;
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+.search-placeholder {
+  background-color: var(--color-bg-light);
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  color: var(--color-dark-muted);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+}

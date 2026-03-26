@@ -1,0 +1,99 @@
+.wallet-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.wallet-header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.wallet-card {
+  background-color: var(--color-primary);
+  background-image: radial-gradient(circle at top right, rgba(255,255,255,0.2), transparent);
+  padding: var(--spacing-2xl);
+  border-radius: var(--radius-2xl);
+  color: white;
+  margin-bottom: var(--spacing-2xl);
+  box-shadow: 0 20px 40px -10px rgba(16, 185, 129, 0.3);
+}
+
+.wallet-balance-label {
+  font-size: 14px;
+  opacity: 0.9;
+  font-weight: 700;
+  margin-bottom: var(--spacing-sm);
+}
+
+.wallet-balance-value {
+  font-size: 48px;
+  font-weight: 900;
+  margin-bottom: var(--spacing-xl);
+}
+
+.wallet-stats {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: var(--spacing-xl);
+}
+
+.wallet-stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.wallet-stat-val { font-size: 18px; font-weight: 800; }
+.wallet-stat-lab { font-size: 12px; opacity: 0.7; font-weight: 700; }
+
+.history-tabs {
+  display: flex;
+  background-color: var(--color-bg-light);
+  padding: 6px;
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--spacing-xl);
+}
+
+.history-tab {
+  flex: 1;
+  padding: 10px;
+  border-radius: var(--radius-lg);
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--color-dark-muted);
+}
+
+.history-tab.active {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.transaction-item {
+  background-color: white;
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-xl);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow-soft);
+}
+
+.tx-info h4 { font-size: 16px; margin-bottom: 2px; }
+.tx-info p { font-size: 12px; color: var(--color-dark-muted); font-weight: 700; }
+
+.tx-amount { font-size: 18px; font-weight: 900; color: var(--color-dark); }
+
+.tx-status {
+  background-color: #f0fdf4;
+  color: #10b981;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}

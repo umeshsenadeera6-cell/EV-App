@@ -1,90 +1,141 @@
 .profile-container {
-  max-width: 800px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
-.profile-header {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2xl);
-  margin-bottom: var(--spacing-3xl);
+.profile-card {
+  background-color: white;
+  border-radius: var(--radius-2xl);
   padding: var(--spacing-2xl);
-  background-color: var(--color-white);
-  border-radius: var(--radius-3xl);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--color-gray-100);
+  box-shadow: var(--shadow-soft);
+  margin-bottom: var(--spacing-2xl);
+  position: relative;
+  overflow: hidden;
 }
 
-.profile-avatar-large {
-  width: 120px;
-  height: 120px;
-  background-color: var(--color-primary-light);
-  color: var(--color-primary);
-  border-radius: var(--radius-2xl);
+.profile-card::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 150px;
+  height: 150px;
+  background-color: #ecfdf5;
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.profile-header-main {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-2xl);
+  position: relative;
+  z-index: 1;
+}
+
+.profile-avatar-jd {
+  width: 80px;
+  height: 80px;
+  background-color: var(--color-primary);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 48px;
-  font-weight: 800;
-}
-
-.profile-meta h2 {
+  color: white;
   font-size: 32px;
-  margin-bottom: var(--spacing-xs);
-}
-
-.profile-meta p {
-  color: var(--color-gray-400);
-  font-weight: 700;
-}
-
-.settings-section {
-  background-color: var(--color-white);
-  border-radius: var(--radius-3xl);
-  padding: var(--spacing-2xl);
-  border: 1px solid var(--color-gray-100);
-  margin-bottom: var(--spacing-xl);
-}
-
-.section-title {
-  font-size: 18px;
   font-weight: 800;
-  margin-bottom: var(--spacing-xl);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--color-gray-400);
+  border: 4px solid white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.settings-item {
+.profile-badges {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-top: 8px;
+}
+
+.badge-eco {
+  background-color: #dcfce7;
+  color: #15803d;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 10px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.badge-premium {
+  background-color: #eff6ff;
+  color: #3b82f6;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.profile-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-md);
+  border-top: 1px solid #f1f5f9;
+  padding-top: var(--spacing-xl);
+}
+
+.stat-item-p {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.stat-val-p { font-size: 24px; font-weight: 900; margin-bottom: 4px; }
+.stat-lab-p { font-size: 10px; color: var(--color-dark-muted); font-weight: 800; text-transform: uppercase; }
+
+.impact-section {
+  background-color: #f0fdf4;
+  border-radius: var(--radius-2xl);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+}
+
+.impact-header {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-xl);
+}
+
+.impact-icon-box {
+  width: 48px;
+  height: 48px;
+  background-color: white;
+  border-radius: var(--radius-lg);
+  display: flex;
   align-items: center;
-  padding: var(--spacing-lg) 0;
-  border-bottom: 1px solid var(--color-gray-50);
-}
-
-.settings-item:last-child {
-  border-bottom: none;
-}
-
-.item-label {
-  font-weight: 700;
-  color: var(--color-dark);
-}
-
-.item-value {
-  font-weight: 800;
+  justify-content: center;
   color: var(--color-primary);
 }
 
-.danger-zone {
-  margin-top: var(--spacing-3xl);
+.view-details-btn {
+  color: var(--color-primary);
+  font-weight: 800;
+  font-size: 14px;
 }
 
-.btn-danger {
-  color: var(--color-red-500);
-  font-weight: 800;
-  padding: var(--spacing-md) var(--spacing-xl);
+.impact-cards-mini {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+.mini-impact-card {
+  background-color: white;
+  padding: var(--spacing-lg);
   border-radius: var(--radius-xl);
-  background-color: var(--color-red-50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

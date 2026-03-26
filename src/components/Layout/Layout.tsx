@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { Map, BarChart2, User, Zap, LogOut } from 'lucide-react';
+import { Home, Zap, CreditCard, User, LogOut } from 'lucide-react';
 import { useAuthStore } from '../../store/useAuthStore';
 import './Layout.css';
 
@@ -20,12 +20,16 @@ const Layout: React.FC = () => {
 
         <nav className="nav-links">
           <NavLink to="/" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
-            <Map size={20} />
-            <span>Map</span>
+            <Home size={20} />
+            <span>Home</span>
           </NavLink>
-          <NavLink to="/impact" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
-            <BarChart2 size={20} />
-            <span>Impact</span>
+          <NavLink to="/charging" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+            <Zap size={20} />
+            <span>Charging</span>
+          </NavLink>
+          <NavLink to="/payments" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+            <CreditCard size={20} />
+            <span>Payments</span>
           </NavLink>
           <NavLink to="/profile" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
             <User size={20} />
@@ -55,12 +59,16 @@ const Layout: React.FC = () => {
       {/* Bottom Nav - Mobile Only */}
       <nav className="mobile-nav">
         <NavLink to="/" className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}>
-          <Map size={24} />
-          <span>Map</span>
+          <Home size={24} />
+          <span>Home</span>
         </NavLink>
-        <NavLink to="/impact" className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}>
-          <BarChart2 size={24} />
-          <span>Impact</span>
+        <NavLink to="/charging" className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}>
+          <Zap size={24} />
+          <span>Charging</span>
+        </NavLink>
+        <NavLink to="/payments" className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}>
+          <CreditCard size={24} />
+          <span>Payments</span>
         </NavLink>
         <NavLink to="/profile" className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}>
           <User size={24} />

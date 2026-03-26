@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Search, Filter, MapPin, Zap, Clock } from 'lucide-react';
+import { Search, Filter, MapPin, Zap, Clock, Mic } from 'lucide-react';
 import { MOCK_STATIONS, useStationStore, getAvailablePorts } from '../../store/useStationStore';
-import StationDetails from './StationDetails.tsx';
+import StationDetails from './StationDetails';
 import './MapScreen.css';
 
 const MapScreen: React.FC = () => {
@@ -14,85 +14,87 @@ const MapScreen: React.FC = () => {
 
   return (
     <div className="map-container">
-      {/* Sidebar Panel */}
-      <div className="map-sidebar">
-        <div className="map-sidebar-header">
-          <h2 className="text-2xl">Find Charging</h2>
-          <div className="search-bar">
-            <Search className="search-icon" size={20} />
-            <input 
-              type="text" 
-              placeholder="Search station or city..."
-              className="search-input"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          <div className="flex gap-2">
-             <button className="flex items-center gap-2 px-4 py-2 border-2 border-gray-100 rounded-xl font-bold text-sm bg-gray-50">
-                <Filter size={16} /> Filters
-             </button>
-          </div>
-        </div>
-
-        <div className="station-list">
-          {filteredStations.map(station => (
-            <div 
-              key={station.id}
-              className={`station-card ${selectedStation?.id === station.id ? 'selected' : ''}`}
-              onClick={() => setSelectedStation(station)}
-            >
-              <div className="station-thumb">
-                <Zap size={24} color={station.cleanEnergyPercentage >= 90 ? '#10b981' : '#f59e0b'} />
-                <span className={`energy-badge ${station.cleanEnergyPercentage >= 90 ? 'high' : 'low'}`}>
-                  {station.cleanEnergyPercentage}%
-                </span>
-              </div>
-              <div className="flex-1">
-                <h4 className="text-sm font-bold">{station.name}</h4>
-                <div className="flex items-center gap-4 mt-2">
-                   <div className="flex items-center gap-1 text-[10px] font-black text-gray-400">
-                      <Clock size={10} /> 5 min
-                   </div>
-                   <div className="flex items-center gap-1 text-[10px] font-black text-emerald-600">
-                      <Zap size={10} /> {getAvailablePorts(station)} {getAvailablePorts(station) === 1 ? 'port' : 'ports'}
-                   </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+      {/* Search Overlay */}
+      <div className="map-search-overlay">
+         <Search size={20} className="ml-4 text-gray-400" />
+         <input 
+           type="text" 
+           placeholder="Search charging stations..."
+           className="map-search-input"
+           value={searchQuery}
+           onChange={(e) => setSearchQuery(e.target.value)}
+         />
+         <div className="flex gap-2 mr-2">
+            <button className="p-3 bg-gray-50 rounded-full text-gray-400"><Mic size={20} /></button>
+            <button className="p-3 bg-gray-50 rounded-full text-gray-400"><Filter size={20} /></button>
+         </div>
       </div>
 
-      {/* Map View Area */}
+      {/* Floating Station List (Desktop Only/Sidebar) */}
+      {!selectedStation && (
+        <div className="map-sidebar hidden md:flex">
+          <div className="p-6">
+             <h2 className="text-xl font-black mb-4">Nearby Stations</h2>
+             <div className="flex flex-col gap-4">
+               {filteredStations.map(station => (
+                 <div 
+                   key={station.id}
+                   className="p-4 bg-gray-50 rounded-2xl cursor-pointer hover:bg-emerald-50 transition-colors"
+                   onClick={() => setSelectedStation(station)}
+                 >
+                    <div className="flex justify-between mb-2">
+                       <h4 className="font-black">{station.name}</h4>
+                       <span className="text-xs font-black text-emerald-600">{station.cleanEnergyPercentage}% Clean</span>
+                    </div>
+                    <div className="flex items-center gap-4 text-xs text-muted font-bold">
+                       <div className="flex items-center gap-1"><Zap size={10} /> {getAvailablePorts(station)} Available</div>
+                       <div className="flex items-center gap-1"><Clock size={10} /> 5 min</div>
+                    </div>
+                 </div>
+               ))}
+             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Map Content */}
       <div className="map-view">
-        <div className="map-placeholder">
-           <MapPin size={48} className="text-gray-200" />
-           <p>Interactive Map View</p>
-        </div>
+         {/* Map markers would be here */}
+         <div className="map-placeholder h-full w-full flex flex-col items-center justify-center bg-slate-100">
+            <MapPin size={48} className="text-gray-300 mb-4 animate-bounce" />
+            <p className="text-sm font-black text-gray-400 uppercase tracking-widest">Interactive Map Visualization</p>
+         </div>
 
-        <div className="map-markers">
-           {MOCK_STATIONS.map((station, i) => (
-              <div 
-                key={station.id} 
-                className={`marker ${selectedStation?.id === station.id ? 'selected' : ''}`}
-                style={{ 
-                  left: `${20 + (i * 15)}%`, 
-                  top: `${30 + (i * 10)}%` 
-                }}
-                onClick={() => setSelectedStation(station)}
-              >
-                 <Zap size={20} className={station.cleanEnergyPercentage >= 90 ? 'text-primary' : 'text-amber'} />
-              </div>
-           ))}
-        </div>
+         <div className="absolute inset-0 pointer-events-none">
+            {MOCK_STATIONS.map((station, i) => (
+               <div 
+                 key={station.id} 
+                 className="marker pointer-events-auto cursor-pointer"
+                 style={{ 
+                   position: 'absolute',
+                   left: `${20 + (i * 15)}%`, 
+                   top: `${30 + (i * 10)}%`,
+                   transform: selectedStation?.id === station.id ? 'scale(1.5)' : 'scale(1)',
+                   transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+                 }}
+                 onClick={() => setSelectedStation(station)}
+               >
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center shadow-lg ${selectedStation?.id === station.id ? 'bg-primary text-white' : 'bg-white text-primary'}`}>
+                     <Zap size={20} fill="currentColor" />
+                  </div>
+               </div>
+            ))}
+         </div>
 
-        {selectedStation && (
-          <StationDetails 
-            station={selectedStation} 
-            onClose={() => setSelectedStation(null)} 
-          />
-        )}
+         {/* Selection Detail Drawer */}
+         {selectedStation && (
+           <div className="absolute inset-0 bg-white z-50 md:left-auto md:w-[500px] md:shadow-2xl animate-fade-in">
+             <StationDetails 
+               station={selectedStation} 
+               onClose={() => setSelectedStation(null)} 
+             />
+           </div>
+         )}
       </div>
     </div>
   );
