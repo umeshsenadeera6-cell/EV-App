@@ -1,86 +1,113 @@
-import React from "react";
-import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, Switch, Image } from "react-native";
-import { User, Car, Bell, Shield, LogOut, ChevronRight, Settings } from "lucide-react-native";
-import { useAuthStore } from "../../store/useAuthStore";
+import React from 'react';
+import { User, Shield, CreditCard, Bell, ChevronRight, LogOut, Trash2, Camera, Car } from 'lucide-react';
+import { useAuthStore } from '../../store/useAuthStore';
 
-export default function ProfileScreen() {
+const ProfileScreen: React.FC = () => {
   const { user, logout } = useAuthStore();
 
-  const menuItems = [
-    { label: "My Vehicle", icon: Car, value: "Tesla Model 3" },
-    { label: "Notifications", icon: Bell, type: "switch" },
-    { label: "Security", icon: Shield, type: "link" },
-    { label: "Preferences", icon: Settings, type: "link" },
+  const sections = [
+    { 
+       title: "Charging Preferences", 
+       items: [
+         { label: "Renewable Energy Goal", value: "90%", icon: Shield, color: "text-emerald-500", bg: "bg-emerald-50" },
+         { label: "Notification Settings", value: "Enabled", icon: Bell, color: "text-blue-500", bg: "bg-blue-50" },
+       ]
+    },
+    { 
+        title: "Billing & Subscription", 
+        items: [
+          { label: "Membership Tier", value: "Premium Plan", icon: CreditCard, color: "text-amber-500", bg: "bg-amber-50" },
+          { label: "Default Payment", value: "•••• 4242", icon: CreditCard, color: "text-gray-500", bg: "bg-gray-50" },
+        ]
+     }
   ];
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <ScrollView className="flex-1 px-6 pt-4">
-        <View className="items-center mb-8">
-          <View className="w-24 h-24 bg-emerald-50 rounded-full items-center justify-center mb-4 border-4 border-white shadow-sm">
-            <User size={48} color="#10b981" />
-          </View>
-          <Text className="text-2xl font-bold text-dark">Eco Driver</Text>
-          <Text className="text-gray-500">Premium Member</Text>
-        </View>
+    <div className="max-w-4xl mx-auto p-8 lg:p-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="flex flex-col md:flex-row items-center gap-10 mb-16 bg-white p-10 rounded-[48px] shadow-2xl shadow-gray-100 border border-gray-50 relative overflow-hidden group">
+         <div className="absolute top-0 right-0 p-12 opacity-[0.03] rotate-12 group-hover:scale-110 transition-transform duration-1000">
+            <User size={240} />
+         </div>
 
-        {/* Stats Row */}
-        <View className="flex-row bg-gray-50 rounded-3xl p-6 mb-8 border border-gray-100">
-          <View className="flex-1 items-center">
-            <Text className="text-2xl font-bold text-dark">84</Text>
-            <Text className="text-gray-500 text-xs">Sessions</Text>
-          </View>
-          <View className="w-[1px] bg-gray-200 h-8 self-center" />
-          <View className="flex-1 items-center">
-            <Text className="text-2xl font-bold text-dark">1.2k</Text>
-            <Text className="text-gray-500 text-xs">kWh total</Text>
-          </View>
-          <View className="w-[1px] bg-gray-200 h-8 self-center" />
-          <View className="flex-1 items-center">
-            <Text className="text-2xl font-bold text-dark">12</Text>
-            <Text className="text-gray-500 text-xs">Streak</Text>
-          </View>
-        </View>
+         <div className="relative">
+            <div className="w-32 h-32 lg:w-40 lg:h-40 bg-gray-50 rounded-[40px] flex items-center justify-center border-4 border-white shadow-2xl shadow-gray-200">
+               <User size={64} className="text-gray-300" />
+            </div>
+            <button className="absolute -bottom-2 -right-2 p-3 bg-primary text-white rounded-2xl shadow-xl hover:scale-110 active:scale-95 transition-all border-4 border-white">
+               <Camera size={20} />
+            </button>
+         </div>
 
-        {/* Menu Items */}
-        <View className="space-y-4 mb-8">
-          {menuItems.map((item, index) => (
-            <TouchableOpacity 
-              key={index}
-              className="flex-row items-center justify-between bg-white p-4 rounded-2xl border border-gray-50 shadow-sm"
-              disabled={item.type === "switch"}
-            >
-              <View className="flex-row items-center">
-                <View className="bg-gray-50 p-2 rounded-xl mr-4">
-                  <item.icon size={20} color="#6b7280" />
-                </View>
-                <Text className="text-lg font-semibold text-dark">{item.label}</Text>
-              </View>
-              
-              <View className="flex-row items-center">
-                {item.value && <Text className="text-gray-400 mr-2">{item.value}</Text>}
-                {item.type === "switch" ? (
-                  <Switch 
-                    trackColor={{ false: "#e5e7eb", true: "#d1fae5" }}
-                    thumbColor={true ? "#10b981" : "#f4f3f4"}
-                    value={true}
-                  />
-                ) : (
-                  <ChevronRight size={20} color="#9ca3af" />
-                )}
-              </View>
-            </TouchableOpacity>
-          )) as any}
-        </View>
+         <div className="text-center md:text-left z-10">
+            <h1 className="text-4xl font-black text-dark tracking-tight mb-2">Driver Account</h1>
+            <p className="text-gray-500 font-bold mb-6 text-lg tracking-tight">{user?.email || 'driver@ecocharge.com'}</p>
+            <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+               <span className="px-5 py-2 bg-emerald-500 text-white rounded-full text-xs font-black uppercase tracking-widest shadow-lg shadow-emerald-100">Premium Driver</span>
+               <span className="px-5 py-2 bg-gray-50 text-gray-400 rounded-full text-xs font-black uppercase tracking-widest border border-gray-100">Joined Mar 2026</span>
+            </div>
+         </div>
+      </div>
 
-        <TouchableOpacity 
-          onPress={logout}
-          className="flex-row items-center justify-center bg-red-50 py-5 rounded-2xl mb-12 border border-red-100"
-        >
-          <LogOut size={20} color="#ef4444" className="mr-2" />
-          <Text className="text-red-500 font-bold text-lg">Sign Out</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </SafeAreaView>
+      {/* Vehicle Info */}
+      <div className="mb-12">
+        <h3 className="text-xl font-bold text-dark mb-6 tracking-tight px-4 capitalize">Registered Vehicle</h3>
+        <div className="bg-dark p-8 rounded-[40px] shadow-2xl shadow-gray-200 relative overflow-hidden group">
+            <Car size={140} className="absolute -bottom-10 -right-10 text-white/5 group-hover:scale-110 transition-transform duration-1000" />
+            <div className="flex items-center gap-6 relative z-10">
+                <div className="w-20 h-20 bg-white/10 rounded-3xl flex items-center justify-center border border-white/20">
+                    <Car size={32} className="text-white" />
+                </div>
+                <div>
+                    <h4 className="text-white font-black text-2xl tracking-tight leading-none mb-1">Tesla Model 3</h4>
+                    <p className="text-white/40 text-sm font-bold uppercase tracking-widest">Performance Dual Motor</p>
+                </div>
+                <button className="ml-auto p-4 bg-white/10 hover:bg-white/20 text-white rounded-2xl transition-all border border-white/10">
+                    <ChevronRight size={24} />
+                </button>
+            </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        {sections.map((section, idx) => (
+          <section key={idx}>
+            <h4 className="text-sm font-black text-gray-400 uppercase tracking-widest mb-6 px-4">{section.title}</h4>
+            <div className="space-y-4">
+               {section.items.map((item, i) => (
+                  <button key={i} className="w-full bg-white p-6 rounded-[32px] border border-gray-100 flex items-center justify-between hover:shadow-2xl hover:shadow-gray-100 hover:-translate-y-1 transition-all group">
+                     <div className="flex items-center gap-4">
+                        <div className={`p-3 rounded-2xl ${item.bg} ${item.color} group-hover:scale-110 transition-transform`}>
+                           <item.icon size={20} />
+                        </div>
+                        <div className="text-left leading-none">
+                           <div className="text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">{item.label}</div>
+                           <div className="text-dark font-black tracking-tight">{item.value}</div>
+                        </div>
+                     </div>
+                     <ChevronRight size={18} className="text-gray-300 group-hover:text-primary transition-colors" />
+                  </button>
+               ))}
+            </div>
+          </section>
+        ))}
+      </div>
+
+      {/* Danger Zone */}
+      <div className="mt-16 pt-12 border-t border-gray-100 flex flex-col md:flex-row gap-4">
+         <button 
+          onClick={() => logout()}
+          className="flex-1 flex items-center justify-center gap-3 py-5 bg-white text-dark font-extrabold rounded-[28px] border border-gray-200 hover:bg-gray-50 hover:shadow-xl transition-all"
+         >
+            <LogOut size={20} />
+            Logout Session
+         </button>
+         <button className="flex-1 flex items-center justify-center gap-3 py-5 bg-red-50 text-red-500 font-extrabold rounded-[28px] border border-red-100 hover:bg-red-600 hover:text-white hover:shadow-2xl hover:shadow-red-100 transition-all group">
+            <Trash2 size={20} className="group-hover:scale-110 transition-transform" />
+            Delete Account
+         </button>
+      </div>
+    </div>
   );
-}
+};
+
+export default ProfileScreen;

@@ -1,69 +1,73 @@
-# EcoCharge - EV Charging for the Eco-Conscious
+# React + TypeScript + Vite
 
-EcoCharge is a React Native mobile application built with Expo that helps EV drivers find charging stations powered by clean energy.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Features (Phase 1 - Core MVP)
-- **Onboarding**: 3-slide community impact overview.
-- **Authentication**: Email/Password and Google Sign-In (Template).
-- **Map Interface**: Live map with custom markers based on clean energy percentage.
-- **Station Details**: Real-time port availability, pricing, and community tips.
-- **Active Session**: Real-time CO₂ savings tracker and session summary.
-- **Impact Dashboard**: Personal stats, trees saved equivalent, and regional leaderboards.
-- **State Management**: Robust state with Zustand.
+Currently, two official plugins are available:
 
-## Tech Stack
-- React Native & Expo (v55+)
-- TypeScript
-- NativeWind (Tailwind CSS v4)
-- Zustand (State Management)
-- React Navigation (Bottom Tabs & Stack)
-- Firebase (Auth & Firestore)
-- React Native Maps
-- Stripe (Payments)
-- Lucide React Native (Icons)
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## Project Structure
-```text
-src/
-├── assets/          # Static assets & icons
-├── components/      # Reusable UI components
-├── config/          # Firebase & Stripe configuration
-├── navigation/      # React Navigation setup
-├── screens/         # App screens (Auth & Main)
-├── services/        # Firebase & Stripe services
-├── store/           # Zustand state stores
-├── utils/           # Helper functions & metrics
-└── global.css       # Tailwind directives
+## React Compiler
+
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
 
-## Setup Instructions
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-1. **Clone and Install**:
-   ```bash
-   npm install
-   ```
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-2. **Firebase Setup**:
-   - Create a project at [Firebase Console](https://console.firebase.google.com/).
-   - Add an Android/iOS app.
-   - Update `src/config/firebase.ts` with your credentials.
-
-3. **Stripe Setup**:
-   - Get your keys from [Stripe Dashboard](https://dashboard.stripe.com/).
-   - Update `src/services/stripe.ts` with your publishable key.
-
-4. **Environment Variables**:
-   Create a `.env` file (or use Expo Constants) with:
-   - `EXPO_PUBLIC_FIREBASE_API_KEY`
-   - `EXPO_PUBLIC_STRIPE_KEY`
-
-5. **Run the App**:
-   ```bash
-   npm run ios     # For iOS
-   npm run android # For Android
-   ```
-
-## Development
-- **Tailwind**: Styles are handled via NativeWind. Edit `global.css` for custom directives.
-- **State**: Use `useAuthStore`, `useStationStore`, and `useSessionStore` for global state.
-# EV-App
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```

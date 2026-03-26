@@ -63,7 +63,7 @@ export const useStationStore = create<StationState>((set) => ({
     set((state) => ({ filters: { ...state.filters, ...newFilters } })),
 }));
 
-// Mock Data
+// Mock Data (Melbourne Area)
 export const MOCK_STATIONS: ChargingStation[] = [
   {
     id: "1",
@@ -82,7 +82,7 @@ export const MOCK_STATIONS: ChargingStation[] = [
     amenities: ["Cafe", "WiFi", "Restroom"],
     rating: 4.8,
     totalReviews: 124,
-    images: ["https://images.unsplash.com/photo-1620241031336-d87780f2bead?q=80&w=2070&auto=format&fit=crop"],
+    images: ["https://example.com/station1.jpg"],
     waitTime: 0,
   },
   {
@@ -102,7 +102,24 @@ export const MOCK_STATIONS: ChargingStation[] = [
     amenities: ["Park", "Shopping"],
     rating: 4.5,
     totalReviews: 89,
-    images: ["https://images.unsplash.com/photo-1593941707882-a5bba14938c7?q=80&w=2072&auto=format&fit=crop"],
+    images: ["https://example.com/station2.jpg"],
     waitTime: 5,
+  },
+  {
+    id: "3",
+    name: "Docklands Charging Point",
+    address: "789 Main St, Docklands VIC",
+    latitude: -37.8150,
+    longitude: 144.9460,
+    cleanEnergyPercentage: 45,
+    energySources: ["Grid Mix"],
+    operator: "City Charge",
+    pricing: { perKWh: 0.20, idleFeePerMinute: 0.05, sessionFee: 0.5 },
+    ports: [{ id: "p5", type: "J1772", power: "7kW", status: "available" }],
+    amenities: ["Restroom"],
+    rating: 3.9,
+    totalReviews: 45,
+    images: ["https://example.com/station3.jpg"],
+    waitTime: 15,
   },
 ];

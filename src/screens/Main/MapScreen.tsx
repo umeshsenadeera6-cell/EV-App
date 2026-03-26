@@ -1,152 +1,122 @@
-import React, { useEffect, useState, useRef } from "react";
-import { View, Text, TouchableOpacity, TextInput, Platform, ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-import { MOCK_STATIONS, ChargingStation } from "../../store/useStationStore";
-import { Search, Filter, Zap, Navigation as NavIcon } from "lucide-react-native";
-import WebMap from "../../components/Map/WebMap";
-import CustomMarker from "../../components/Map/CustomMarker";
-import { useNavigation } from "@react-navigation/native";
-import BottomSheet, { BottomSheetView, BottomSheetFlatList } from "@gorhom/bottom-sheet";
+import React, { useState } from 'react';
+import { MOCK_STATIONS, useStationStore } from '../../store/useStationStore';
+import { Search, Filter, MapPin, Zap, Clock, Star, ChevronRight } from 'lucide-react';
+import StationDetails from './StationDetails';
 
-export default function MapScreen() {
-  const navigation = useNavigation<any>();
-  const [stations, setStations] = useState<ChargingStation[]>([]);
-  const [selectedStation, setSelectedStation] = useState<ChargingStation | null>(null);
-  const bottomSheetRef = useRef<BottomSheet>(null);
-  const mapRef = useRef<MapView>(null);
-  
-  useEffect(() => {
-    setStations(MOCK_STATIONS);
-  }, []);
-
-  const onStationPress = (station: ChargingStation) => {
-    setSelectedStation(station);
-    if (Platform.OS !== "web" && mapRef.current) {
-      mapRef.current.animateToRegion({
-        latitude: station.latitude,
-        longitude: station.longitude,
-        latitudeDelta: 0.01,
-        longitudeDelta: 0.01,
-      }, 1000);
-    }
-  };
+const MapScreen: React.FC = () => {
+  const { selectedStation, setSelectedStation } = useStationStore();
+  const [searchQuery, setSearchQuery] = useState('');
 
   return (
-    <View className="flex-1 bg-white">
-      {/* Map View */}
-      {Platform.OS === "web" ? (
-        <WebMap 
-          stations={stations} 
-          onMarkerPress={onStationPress} 
-        />
-      ) : (
-        <MapView
-          provider={PROVIDER_GOOGLE}
-          ref={mapRef}
-          className="flex-1"
-          initialRegion={{
-            latitude: -37.8136,
-            longitude: 144.9631,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-        >
-          {stations.map((station) => (
-            <Marker
-              key={station.id}
-              coordinate={{ latitude: station.latitude, longitude: station.longitude }}
-              onPress={() => onStationPress(station)}
-            >
-              <CustomMarker percentage={station.cleanEnergyPercentage} />
-            </Marker>
-          ))}
-        </MapView>
-      )}
-
-      {/* Floating Controls */}
-      <SafeAreaView className="absolute top-0 left-0 right-0 px-6 pt-4 flex-row justify-between pointer-events-box-none">
-        <View className="flex-1 bg-white h-14 rounded-2xl shadow-lg flex-row items-center px-4 mr-4 border border-gray-100">
-          <Search size={20} color="#9ca3af" />
-          <TextInput 
-            placeholder="Search charging stations..." 
-            className="flex-1 ml-3 text-dark font-medium"
-            placeholderTextColor="#9ca3af"
-          />
-        </View>
-        <TouchableOpacity className="bg-white w-14 h-14 rounded-2xl shadow-lg items-center justify-center border border-gray-100">
-          <Filter size={24} color="#111827" />
-        </TouchableOpacity>
-      </SafeAreaView>
-
-      <TouchableOpacity 
-        className="absolute bottom-40 right-6 bg-white w-14 h-14 rounded-full shadow-xl items-center justify-center border border-gray-100 z-50"
-        onPress={() => {}}
-      >
-        <NavIcon size={24} color="#10b981" />
-      </TouchableOpacity>
-
-      {/* Bottom Sheet for Stations (Native only) */}
-      {Platform.OS !== "web" && (
-        <BottomSheet
-          ref={bottomSheetRef}
-          index={0}
-          snapPoints={["35%", "85%"]}
-          backgroundStyle={{ borderRadius: 40 }}
-        >
-          <BottomSheetView className="p-6 flex-1">
-            <View className="flex-row justify-between items-center mb-6">
-              <Text className="text-2xl font-bold text-dark">Nearby Stations</Text>
-              <View className="bg-emerald-50 px-3 py-1 rounded-full">
-                <Text className="text-primary text-xs font-bold">{stations.length} nearby</Text>
-              </View>
-            </View>
-
-            <BottomSheetFlatList
-              data={stations}
-              keyExtractor={(item: ChargingStation) => item.id}
-              renderItem={({ item }: { item: ChargingStation }) => (
-                <TouchableOpacity 
-                  onPress={() => navigation.navigate("StationDetails", { station: item })}
-                  className="flex-row items-center bg-gray-50 p-4 rounded-3xl mb-4 border border-gray-100"
-                >
-                  <View className={`w-14 h-14 rounded-2xl items-center justify-center ${
-                    item.cleanEnergyPercentage >= 90 ? "bg-emerald-100" : "bg-amber-100"
-                  }`}>
-                    <Zap size={24} color={item.cleanEnergyPercentage >= 90 ? "#10b981" : "#fbbf24"} />
-                  </View>
-                  <View className="flex-1 ml-4">
-                    <Text className="font-bold text-dark text-lg">{item.name}</Text>
-                    <Text className="text-gray-400 text-sm">{item.distance} km • {item.waitTime}m wait</Text>
-                  </View>
-                  <View className="items-end">
-                    <Text className="text-primary font-bold text-lg">{item.cleanEnergyPercentage}%</Text>
-                    <Text className="text-[10px] text-primary uppercase font-bold tracking-tighter">Clean Energy</Text>
-                  </View>
-                </TouchableOpacity>
-              )}
-              contentContainerStyle={{ paddingBottom: 20 }}
+    <div className="flex h-full relative">
+      {/* Side Panel (Search & List) */}
+      <div className="w-full md:w-[400px] h-full bg-white border-r border-gray-200 flex flex-col z-10">
+        <div className="p-6 border-b border-gray-100">
+          <div className="relative mb-4">
+            <Search className="absolute left-4 top-3 text-gray-400" size={20} />
+            <input
+              type="text"
+              placeholder="Search charging stations..."
+              className="w-full pl-12 pr-4 py-3 bg-gray-50 rounded-2xl border-none focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
-          </BottomSheetView>
-        </BottomSheet>
-      )}
+          </div>
+          <div className="flex gap-2">
+            <button className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-50 text-gray-600 rounded-xl hover:bg-gray-100 transition-all text-sm font-medium">
+              <Filter size={16} />
+              Filters
+            </button>
+            <button className="px-4 py-2.5 bg-emerald-50 text-primary rounded-xl hover:bg-emerald-100 transition-all text-sm font-bold">
+              Nearby
+            </button>
+          </div>
+        </div>
 
-      {/* Web List View fallback */}
-      {Platform.OS === "web" && (
-        <View className="absolute bottom-0 left-0 right-0 h-1/3 bg-white rounded-t-[40px] shadow-2xl p-6 border-t border-gray-100">
-          <Text className="text-xl font-bold text-dark mb-4">Nearby Stations</Text>
-          <ScrollView>
-             {stations.map((item) => (
-                <TouchableOpacity 
-                  key={item.id}
-                  className="flex-row items-center bg-gray-50 p-4 rounded-3xl mb-4"
-                >
-                  <Text className="font-bold text-dark">{item.name}</Text>
-                </TouchableOpacity>
-             ))}
-          </ScrollView>
-        </View>
+        <div className="flex-1 overflow-y-auto">
+          {MOCK_STATIONS.map((station) => (
+            <button
+              key={station.id}
+              onClick={() => setSelectedStation(station)}
+              className={`w-full p-6 text-left border-b border-gray-50 transition-all hover:bg-gray-50 group ${
+                selectedStation?.id === station.id ? 'bg-emerald-50/50 border-emerald-100' : ''
+              }`}
+            >
+              <div className="flex justify-between items-start mb-2">
+                <div className="flex-1">
+                  <h3 className="font-bold text-dark text-lg group-hover:text-primary transition-colors">
+                    {station.name}
+                  </h3>
+                  <div className="flex items-center text-gray-400 text-sm mt-1">
+                    <MapPin size={14} className="mr-1" />
+                    {station.address}
+                  </div>
+                </div>
+                <div className="bg-emerald-50 px-2.5 py-1 rounded-lg">
+                  <span className="text-primary font-bold text-xs">{station.cleanEnergyPercentage}%</span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4 mt-4">
+                <div className="flex items-center gap-1.5">
+                  <Zap size={14} className="text-amber-500" />
+                  <span className="text-xs font-bold text-dark">
+                    {station.ports.filter(p => p.status === 'available').length} Available
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Clock size={14} className="text-gray-400" />
+                  <span className="text-xs font-medium text-gray-500">{station.waitTime}m wait</span>
+                </div>
+                <div className="flex items-center gap-1.5 ml-auto">
+                  <Star size={14} className="text-amber-400 fill-amber-400" />
+                  <span className="text-xs font-bold text-dark">{station.rating}</span>
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Main Map Area (Desktop) */}
+      <div className="flex-1 bg-gray-100 relative hidden md:block">
+        {/* Placeholder for real map */}
+        <div className="absolute inset-0 flex items-center justify-center bg-[#e5e7eb] overflow-hidden">
+          <div className="absolute inset-0 opacity-20 pointer-events-none" 
+               style={{ backgroundImage: 'radial-gradient(#10b981 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+          <div className="text-center z-10 bg-white/80 backdrop-blur-md p-8 rounded-[40px] shadow-2xl border border-white max-w-md mx-6">
+            <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-6">
+              <MapPin size={40} className="text-primary" />
+            </div>
+            <h2 className="text-2xl font-bold text-dark mb-3">Interactive Web Map</h2>
+            <p className="text-gray-500 mb-8 leading-relaxed">
+              Explore 10,000+ eco-certified charging stations in real-time. Powering 100% renewable energy across Australia.
+            </p>
+            <div className="flex flex-wrap gap-3 justify-center">
+               {MOCK_STATIONS.map(s => (
+                 <button 
+                  key={s.id}
+                  onClick={() => setSelectedStation(s)}
+                  className={`w-10 h-10 rounded-full border-4 border-white shadow-lg transition-transform hover:scale-110 flex items-center justify-center ${
+                    s.cleanEnergyPercentage >= 90 ? 'bg-primary' : 'bg-amber-400'
+                  }`}
+                 >
+                   <Zap size={16} color="white" />
+                 </button>
+               ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Detail Overlay / Secondary Panel */}
+      {selectedStation && (
+        <div className="absolute inset-0 md:relative md:w-[450px] bg-white shadow-2xl z-20 overflow-y-auto">
+           <StationDetails station={selectedStation} onClose={() => setSelectedStation(null)} />
+        </div>
       )}
-    </View>
+    </div>
   );
-}
+};
+
+export default MapScreen;

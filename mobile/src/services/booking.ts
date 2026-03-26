@@ -44,6 +44,7 @@ export const bookingService = {
 
   // Join the queue
   async joinQueue(stationId: string, userId: string, waitTime: number) {
+    // Check if user is already in queue
     const q = query(
       collection(db, "queues"),
       where("stationId", "==", stationId),
